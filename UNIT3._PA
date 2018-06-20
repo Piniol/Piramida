@@ -1,0 +1,123 @@
+unit Unit3;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, INIFiles,
+  StdCtrls;
+
+type
+  TForm3 = class(TForm)
+    Label1: TLabel;
+    l1: TLabel;
+    Label3: TLabel;
+    l2: TLabel;
+    Label2: TLabel;
+    l3: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form3: TForm3;
+
+implementation
+
+uses Unit1;
+
+{$R *.DFM}
+
+procedure TForm3.Button1Click(Sender: TObject);
+begin
+form3.close;
+end;
+
+procedure TForm3.Button2Click(Sender: TObject);
+var I: Byte;
+    Plik: TINIFile;
+    wynik:integer;
+begin
+wynik:=application.MessageBox('Czy na pewno chcesz usun¹æ wpisy?','Potwierdzenie',mb_YesNo+mb_iconquestion);
+if wynik=6 then begin
+try
+Plik:=TINIFile.Create(ExtractFilePath(ParamStr(0))+'ustawienia');
+Plik.WriteString('WYNIKI','1','Piniol');
+Plik.WriteInteger('WYNIKI','1a',400);
+Plik.Writeinteger('WYNIKI','1b',6);
+Plik.Writeinteger('WYNIKI','1c',0);
+Plik.Writeinteger('WYNIKI','1d',0);
+Plik.WriteString('WYNIKI','2','Piniol');
+Plik.WriteInteger('WYNIKI','2a',500);
+Plik.Writeinteger('WYNIKI','2b',6);
+Plik.Writeinteger('WYNIKI','2c',0);
+Plik.Writeinteger('WYNIKI','2d',0);
+Plik.WriteString('WYNIKI','3','Piniol');
+Plik.WriteInteger('WYNIKI','3a',600);
+Plik.Writeinteger('WYNIKI','3b',6);
+Plik.Writeinteger('WYNIKI','3c',0);
+Plik.Writeinteger('WYNIKI','3d',0);
+l1.caption:='Gracz: Piniol'+#13+'Wyniki: 400'+#13+'Czas: 06:00:00';
+l2.caption:='Gracz: Piniol'+#13+'Wyniki: 500'+#13+'Czas: 06:00:00';
+l3.caption:='Gracz: Piniol'+#13+'Wyniki: 600'+#13+'Czas: 06:00:00';
+finally
+Plik.Free;
+end;
+end;
+end;
+
+procedure TForm3.FormShow(Sender: TObject);
+var plik:tinifile;
+    i:integer;
+    g,m,s:string;
+begin
+try
+Plik:=TINIFile.Create(ExtractFilePath(ParamStr(0))+'ustawienia');
+if Plik.readinteger('WYNIKI','1b',6)<10 then
+g:='0'+inttostr(Plik.readinteger('WYNIKI','1b',6))+':' else
+g:=inttostr(Plik.readinteger('WYNIKI','1b',6))+':';
+if Plik.readinteger('WYNIKI','1c',0)<10 then
+m:='0'+inttostr(Plik.readinteger('WYNIKI','1c',0))+':' else
+m:=inttostr(Plik.readinteger('WYNIKI','1c',0))+':';
+if Plik.readinteger('WYNIKI','1d',6)<10 then
+s:='0'+inttostr(Plik.readinteger('WYNIKI','1d',0)) else
+s:=inttostr(Plik.readinteger('WYNIKI','1d',0));
+l1.caption:='Gracz: '+Plik.readString('WYNIKI','1','Piniol')+#13+
+            'Wyniki: '+inttostr(Plik.readInteger('WYNIKI','1a',400))+#13+
+            'Czas: '+g+m+s;
+if Plik.readinteger('WYNIKI','2b',6)<10 then
+g:='0'+inttostr(Plik.readinteger('WYNIKI','2b',6))+':' else
+g:=inttostr(Plik.readinteger('WYNIKI','2b',6))+':';
+if Plik.readinteger('WYNIKI','2c',0)<10 then
+m:='0'+inttostr(Plik.readinteger('WYNIKI','2c',0))+':' else
+m:=inttostr(Plik.readinteger('WYNIKI','2c',0))+':';
+if Plik.readinteger('WYNIKI','2d',6)<10 then
+s:='0'+inttostr(Plik.readinteger('WYNIKI','2d',0)) else
+s:=inttostr(Plik.readinteger('WYNIKI','2d',0));
+l2.caption:='Gracz: '+Plik.readString('WYNIKI','2','Piniol')+#13+
+            'Wyniki: '+inttostr(Plik.readInteger('WYNIKI','2a',500))+#13+
+            'Czas: '+g+m+s;
+if Plik.readinteger('WYNIKI','3b',6)<10 then
+g:='0'+inttostr(Plik.readinteger('WYNIKI','3b',6))+':' else
+g:=inttostr(Plik.readinteger('WYNIKI','3b',6))+':';
+if Plik.readinteger('WYNIKI','3c',0)<10 then
+m:='0'+inttostr(Plik.readinteger('WYNIKI','3c',0))+':' else
+m:=inttostr(Plik.readinteger('WYNIKI','3c',0))+':';
+if Plik.readinteger('WYNIKI','3d',6)<10 then
+s:='0'+inttostr(Plik.readinteger('WYNIKI','3d',0)) else
+s:=inttostr(Plik.readinteger('WYNIKI','3d',0));
+l3.caption:='Gracz: '+Plik.readString('WYNIKI','3','Piniol')+#13+
+            'Wyniki: '+inttostr(Plik.readInteger('WYNIKI','3a',600))+#13+
+            'Czas: '+g+m+s;
+finally
+Plik.Free;
+end;
+end;
+
+end.
